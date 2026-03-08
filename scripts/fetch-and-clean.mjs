@@ -27,7 +27,7 @@ const MAX_P1_LAG_DAYS = 400;
 const MAX_P2_LAG_DAYS = 550;
 const MAX_ECOPR_LAG_DAYS = 700;
 const MAX_PRCARD_LAG_DAYS = 900;
-const MIN_FRONTIER_SAMPLE_COUNT = 2;
+const MIN_FRONTIER_SAMPLE_COUNT = 1;
 
 const SHIFTED_FD_SOURCE_KEYS = new Set(['may', 'jun', 'jul', 'aug', 'sep', 'oct-2025', 'nov-2025']);
 const FEB_MAR_FD_SOURCE_KEYS = new Set(['feb', 'mar']);
