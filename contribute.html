@@ -1,0 +1,112 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>贡献数据 | PR Progress Dashboard</title>
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <main class="wrap">
+      <section class="hero">
+        <div class="hero-top">
+          <h1 data-i18n="title">贡献数据</h1>
+          <button class="lang-btn" id="langToggle" type="button">EN</button>
+        </div>
+        <p class="sources-tip" data-i18n="subtitle">你可以在对应月份的共享 Google Sheet 中补充或修正记录，帮助提升统计准确性。</p>
+        <div class="hero-actions">
+          <a class="jump-btn" data-i18n="back" href="./index.html">返回主页</a>
+        </div>
+      </section>
+
+      <section class="sources-card">
+        <h2 data-i18n="sourcesTitle">全部数据源（月度）</h2>
+        <p class="sources-tip" data-i18n="sourcesTip">以下链接来自当前项目抓取配置，可直接点击打开 Google Sheets。</p>
+
+        <div class="abbr-table-wrap">
+          <table class="abbr-table">
+            <thead>
+              <tr>
+                <th data-i18n="col1">月份</th>
+                <th data-i18n="col2">Google Sheet 链接</th>
+              </tr>
+            </thead>
+            <tbody id="sourceTableBody"></tbody>
+          </table>
+        </div>
+      </section>
+    </main>
+
+    <script>
+      const translations = {
+        zh: {
+          title:       '贡献数据',
+          subtitle:    '你可以在对应月份的共享 Google Sheet 中补充或修正记录，帮助提升统计准确性。',
+          back:        '返回主页',
+          sourcesTitle:'全部数据源（月度）',
+          sourcesTip:  '以下链接来自当前项目抓取配置，可直接点击打开 Google Sheets。',
+          col1:        '月份',
+          col2:        'Google Sheet 链接',
+          langBtn:     'EN',
+          pageTitle:   '贡献数据 | PR Progress Dashboard',
+        },
+        en: {
+          title:       'Contribute Data',
+          subtitle:    'You can add or correct records in the shared Google Sheet for the corresponding month to help improve data accuracy.',
+          back:        'Back to Home',
+          sourcesTitle:'All Data Sources (Monthly)',
+          sourcesTip:  'The following links are from the current project fetch configuration. Click to open directly in Google Sheets.',
+          col1:        'Month',
+          col2:        'Google Sheet Link',
+          langBtn:     '中文',
+          pageTitle:   'Contribute Data | PR Progress Dashboard',
+        },
+      };
+
+      const sources = [
+        { displayKey: 'Nov-2025', url: 'https://docs.google.com/spreadsheets/d/1Zq7eovhjfSTZkRm6WwMkRLYSGW5LgiSDEf6WBHudvcA/edit?gid=342524790' },
+        { displayKey: 'Oct-2025', url: 'https://docs.google.com/spreadsheets/d/10CBcIhFt3q5iQwZwvDcGntF1l2pnNfwW0ehqvPp_oMU/edit?gid=0' },
+        { displayKey: 'Sep-2025', url: 'https://docs.google.com/spreadsheets/d/1doyD3zSDi6D-dUsx0lkIzbYHmkFL06ay24-mKvMDjTA/edit?gid=327230977' },
+        { displayKey: 'Aug-2025', url: 'https://docs.google.com/spreadsheets/d/1e6NVJS8ZZQ1zB5n--C2AjsZS7jFXnp3lesM0KHQBuNM/edit?gid=327230977' },
+        { displayKey: 'Jul-2025', url: 'https://docs.google.com/spreadsheets/d/1Sxq-4-k34GdfRcsvJa2Ply4u9pqEpgFkmiewOur_BW8/edit?gid=1137435725' },
+        { displayKey: 'Jun-2025', url: 'https://docs.google.com/spreadsheets/d/18n_DsN0ui1YGqlygIUmF9VIV43ZhpsSWdaEVSTxB-vk/edit?gid=0' },
+        { displayKey: 'May-2025', url: 'https://docs.google.com/spreadsheets/d/1ax_Xvp01lg3sFRkZioz5w_c5oGlVLwbNkhgmxMw7GN4/edit?gid=1137435725' },
+        { displayKey: 'Apr-2025', url: 'https://docs.google.com/spreadsheets/d/1m_CSwVXZLAyzw1jiDA6k0WgZH_fk2DBDy39TPcLWE30/edit?gid=0' },
+        { displayKey: 'Mar-2025', url: 'https://docs.google.com/spreadsheets/d/1P0sJOc11nCG3bl8jn0wY4XmhAKhmj-i5B7Yr6_tA9v8/edit?gid=0' },
+        { displayKey: 'Feb-2025', url: 'https://docs.google.com/spreadsheets/d/19VoIhvQo5X7SRT9MNW9DPAP7WKgrLE5cgC7giYLctCM/edit?gid=0' },
+        { displayKey: 'Jan-2025', url: 'https://docs.google.com/spreadsheets/d/1ioxtqGnbHi6khSQ4ErvA1SgLgJgmo2LbPxEb01YRRx8/edit?gid=397033753' },
+        { displayKey: 'Dec-2024', url: 'https://docs.google.com/spreadsheets/d/1EPQOzLb40oqopWieywnMRieBarW7nWn9IIOk1l479w0/edit?gid=634181719' },
+        { displayKey: 'Nov-2024', url: 'https://docs.google.com/spreadsheets/d/1vQ2OOq4aEjZYcAyGWKRBGWj7-6YKeFHP_4dsJTt-Py0/edit?gid=342524790' },
+        { displayKey: 'Oct-2024', url: 'https://docs.google.com/spreadsheets/d/1V2pSzVcpuWTBT89SaaJaQ0nlLq85vTcfmOh8uhlgeIc/edit?gid=1837103431' },
+      ];
+
+      const tbody = document.getElementById('sourceTableBody');
+      sources.forEach((source) => {
+        const tr = document.createElement('tr');
+        tr.innerHTML = `<td><strong>${source.displayKey}</strong></td><td><a href="${source.url}" target="_blank" rel="noreferrer">${source.url}</a></td>`;
+        tbody.appendChild(tr);
+      });
+
+      let currentLang = localStorage.getItem('lang') || 'zh';
+
+      const applyTranslations = () => {
+        const t = translations[currentLang];
+        document.querySelectorAll('[data-i18n]').forEach((el) => {
+          const key = el.dataset.i18n;
+          if (key in t) el.textContent = t[key];
+        });
+        document.getElementById('langToggle').textContent = t.langBtn;
+        document.title = t.pageTitle;
+        document.documentElement.lang = currentLang === 'zh' ? 'zh-CN' : 'en';
+      };
+
+      document.getElementById('langToggle').addEventListener('click', () => {
+        currentLang = currentLang === 'zh' ? 'en' : 'zh';
+        localStorage.setItem('lang', currentLang);
+        applyTranslations();
+      });
+
+      applyTranslations();
+    </script>
+  </body>
+</html>

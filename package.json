@@ -1,0 +1,10 @@
+{
+  "name": "nonee-pr-progress-tracker",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "fetch": "node scripts/fetch-and-clean.mjs",
+    "start": "node scripts/serve.mjs"
+  }
+}

@@ -1,0 +1,36 @@
+name: Daily Data Fetch
+
+on:
+  schedule:
+    # 8:00 AM PST (UTC-8) = 16:00 UTC
+    # In PDT (UTC-7) this runs at 9:00 AM — acceptable
+    - cron: '0 16 * * *'
+  workflow_dispatch: # allow manual trigger from GitHub UI
+
+permissions:
+  contents: write
+
+jobs:
+  fetch:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Fetch and process data
+        run: node scripts/fetch-and-clean.mjs
+
+      - name: Commit updated data
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add data/dashboard-summary.json
+          git diff --cached --quiet && echo "No data changes." || (
+            git commit -m "chore: data update $(date -u +'%Y-%m-%d')"
+            git push
+          )

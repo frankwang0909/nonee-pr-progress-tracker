@@ -1,0 +1,330 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>PR Progress Dashboard</title>
+    <link rel="stylesheet" href="./styles.css" />
+    <style>
+      /* ── Flowchart inline styles (scoped to .fc-wrap) ── */
+      .fc-wrap { font-family: 'IBM Plex Sans', sans-serif; font-size: 12px; color: #1a1a2e; }
+
+      .fc-legend {
+        display: flex; flex-wrap: wrap; gap: 16px;
+        padding: 14px 24px; background: #fff;
+        border-bottom: 2px solid #dde3ec;
+        align-items: center; font-size: 13px; font-weight: 500;
+        border-radius: 8px 8px 0 0;
+      }
+      .fc-legend-title { font-weight: 700; font-size: 14px; color: #1a1a2e; margin-right: 4px; }
+      .fc-legend-item { display: flex; align-items: center; gap: 8px; color: #333; }
+      .fc-legend-box {
+        height: 28px; border-radius: 5px;
+        display: inline-flex; align-items: center; justify-content: center;
+        font-size: 12px; font-weight: 600; color: #fff;
+        white-space: nowrap; padding: 0 12px;
+      }
+      .fc-lb-blue    { background: #1565c0; }
+      .fc-lb-green   { background: #2e7d32; border-radius: 16px; }
+      .fc-lb-pink    { background: #e57373; }
+      .fc-lb-lblue   { background: #90caf9; color: #1a1a2e; }
+      .fc-line-solid { width: 60px; height: 2px; background: #333; }
+      .fc-line-gdash { width: 60px; height: 2px; background: repeating-linear-gradient(90deg,#2e7d32 0,#2e7d32 6px,transparent 6px,transparent 12px); }
+      .fc-line-rdash { width: 60px; height: 2px; background: repeating-linear-gradient(90deg,#e53935 0,#e53935 6px,transparent 6px,transparent 12px); }
+
+      .fc-scroll {
+        overflow-x: auto; overflow-y: auto; max-height: 90vh;
+        background: #f0f4f8; border-radius: 0 0 8px 8px;
+      }
+      .fc-canvas {
+        position: relative; width: 1300px; min-height: 1250px;
+        margin: 0 auto; padding: 20px;
+      }
+      .fc-node {
+        position: absolute; display: flex; align-items: center;
+        justify-content: center; text-align: center;
+        font-weight: 600; font-size: 11px; line-height: 1.3;
+        cursor: default; padding: 4px 6px; z-index: 10;
+        transition: filter 0.2s, transform 0.15s;
+      }
+      .fc-node:hover { filter: brightness(1.12); transform: scale(1.04); z-index: 99; }
+      .fc-rect   { border-radius: 4px; }
+      .fc-pill   { border-radius: 24px; }
+      .fc-circle { border-radius: 50%; }
+      .fc-diamond { transform: rotate(45deg); border-radius: 4px; }
+      .fc-diamond span { transform: rotate(-45deg); display: block; }
+      .fc-doc { border-radius: 4px 4px 0 0; position: relative; }
+
+      .fc-blue         { background: #1565c0; color: #fff; }
+      .fc-dark-blue    { background: #0d3b82; color: #fff; }
+      .fc-light-blue   { background: #bbdefb; color: #1565c0; border: 1px solid #90caf9; }
+      .fc-green        { background: #2e7d32; color: #fff; }
+      .fc-dark-green   { background: #1b5e20; color: #fff; }
+      .fc-pink         { background: #ef9a9a; color: #7f1b14; border: 1px solid #e57373; }
+      .fc-red-node     { background: #c62828; color: #fff; }
+      .fc-gray         { background: #e0e0e0; color: #333; border: 1px solid #bdbdbd; }
+      .fc-white-border { background: #fff; color: #333; border: 1.5px solid #999; }
+      .fc-start-green  { background: #43a047; color: #fff; }
+      .fc-end-red      { background: #c62828; color: #fff; }
+
+      .fc-arrows {
+        position: absolute; top: 0; left: 0;
+        width: 100%; height: 100%;
+        pointer-events: none; z-index: 1; overflow: visible;
+      }
+      .fc-tooltip {
+        position: fixed; background: #1a1a2e; color: #fff;
+        padding: 8px 12px; border-radius: 6px; font-size: 12px;
+        pointer-events: none; opacity: 0; transition: opacity 0.2s;
+        max-width: 260px; z-index: 9999; line-height: 1.6;
+      }
+      .fc-region { position: absolute; border-radius: 6px; z-index: 0; pointer-events: none; }
+      .fc-region-bg  { background: #f9fbe7; border: 2px dashed #7cb342; }
+      .fc-section-label {
+        position: absolute; font-size: 10px; font-weight: 700;
+        color: #388e3c; z-index: 5; letter-spacing: 0.5px;
+      }
+    </style>
+  </head>
+  <body>
+    <main class="wrap">
+      <section class="hero">
+        <div class="hero-top">
+          <h1 data-i18n="heroTitle">NON EE PR 进度看板</h1>
+          <button class="lang-btn" id="langToggle" type="button">EN</button>
+        </div>
+        <p id="asOf">更新时间: --</p>
+        <p class="source-note" data-i18n="sourceNote">数据来源：公开共享 Google Sheets 数据。</p>
+        <div class="hero-actions">
+          <a class="jump-btn" data-i18n="contribute" href="./contribute.html">贡献数据 / 查看全部数据源</a>
+        </div>
+      </section>
+
+      <section class="grid" id="progressGrid"></section>
+
+      <!-- 流程图 -->
+      <section class="process-card">
+        <section class="diagram-card">
+          <h3 data-i18n="diagramTitle">PR 流程图</h3>
+          <div class="fc-wrap">
+            <div class="fc-legend">
+              <span class="fc-legend-title">Legend:</span>
+              <div class="fc-legend-item"><div class="fc-legend-box fc-lb-blue">Applicant Action</div></div>
+              <div class="fc-legend-item"><div class="fc-legend-box fc-lb-green">Milestones</div></div>
+              <div class="fc-legend-item"><div class="fc-legend-box fc-lb-pink">Returned / Comprehensive</div></div>
+              <div class="fc-legend-item"><div class="fc-legend-box fc-lb-lblue">IRCC Process</div></div>
+              <div class="fc-legend-item">
+                <div class="fc-line-gdash"></div><span>Background check</span>
+              </div>
+              <div class="fc-legend-item">
+                <div class="fc-line-rdash"></div><span>Process depends on (Comprehensive check)</span>
+              </div>
+            </div>
+            <div class="fc-scroll">
+              <div class="fc-canvas" id="fcCanvas">
+
+                <div class="fc-region fc-region-bg" style="left:340px;top:240px;width:360px;height:530px;"></div>
+                <div class="fc-section-label" style="left:350px;top:248px;">Background Check Region</div>
+
+                <svg class="fc-arrows" id="fcArrowSvg">
+                  <defs>
+                    <marker id="arr" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+                      <path d="M0,0 L0,6 L8,3 z" fill="#555"/>
+                    </marker>
+                    <marker id="arr-red" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+                      <path d="M0,0 L0,6 L8,3 z" fill="#e53935"/>
+                    </marker>
+                    <marker id="arr-green" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+                      <path d="M0,0 L0,6 L8,3 z" fill="#2e7d32"/>
+                    </marker>
+                    <marker id="arr-blue" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+                      <path d="M0,0 L0,6 L8,3 z" fill="#1565c0"/>
+                    </marker>
+                  </defs>
+
+                  <line x1="75" y1="98" x2="125" y2="98" stroke="#555" stroke-width="1.5" marker-end="url(#arr)"/>
+                  <line x1="205" y1="98" x2="255" y2="98" stroke="#555" stroke-width="1.5" marker-end="url(#arr)"/>
+                  <line x1="315" y1="98" x2="370" y2="98" stroke="#555" stroke-width="1.5" marker-end="url(#arr)"/>
+                  <text x="335" y="92" font-size="9" fill="#c62828" font-weight="600">No</text>
+
+                  <line x1="286" y1="120" x2="295" y2="165" stroke="#555" stroke-width="1.5" marker-end="url(#arr)"/>
+                  <text x="296" y="148" font-size="9" fill="#2e7d32" font-weight="600">Yes</text>
+                  <line x1="430" y1="98" x2="480" y2="98" stroke="#555" stroke-width="1.5" marker-end="url(#arr)"/>
+                  <line x1="590" y1="98" x2="640" y2="98" stroke="#555" stroke-width="1.5" marker-end="url(#arr)"/>
+                  <text x="605" y="92" font-size="9" fill="#c62828" font-weight="600">No</text>
+
+                  <path d="M400,80 Q400,30 195,30 Q120,30 165,75" stroke="#555" stroke-width="1.5" fill="none" marker-end="url(#arr)"/>
+                  <text x="270" y="26" font-size="9" fill="#555">Returned with refund</text>
+
+                  <path d="M535,80 Q535,30 165,30" stroke="#555" stroke-width="1.5" fill="none" marker-end="url(#arr)"/>
+                  <text x="480" y="26" font-size="9" fill="#2e7d32" font-weight="600">Yes - Nomination must be valid</text>
+
+                  <line x1="225" y1="185" x2="265" y2="185" stroke="#555" stroke-width="1.5" marker-end="url(#arr)"/>
+                  <line x1="335" y1="185" x2="660" y2="185" stroke="#555" stroke-width="1.5" marker-end="url(#arr)"/>
+
+                  <polyline points="270,204 270,230 190,230 190,295" stroke="#555" stroke-width="1.5" fill="none" marker-end="url(#arr)"/>
+                  <text x="148" y="248" font-size="9" fill="#555">Missing info OR</text>
+                  <text x="148" y="258" font-size="9" fill="#555">Not paid BIL fees</text>
+
+                  <line x1="300" y1="200" x2="300" y2="240" stroke="#555" stroke-width="1.5" marker-end="url(#arr)"/>
+
+                  <path d="M155,311 Q125,311 125,185" stroke="#555" stroke-width="1.5" fill="none" marker-end="url(#arr)"/>
+                  <text x="108" y="258" font-size="9" fill="#555" transform="rotate(-90,108,258)">Manual Webform</text>
+
+                  <line x1="300" y1="260" x2="245" y2="340" stroke="#555" stroke-width="1.5" marker-end="url(#arr)"/>
+                  <line x1="205" y1="360" x2="170" y2="710" stroke="#555" stroke-width="1.5" marker-end="url(#arr)"/>
+                  <line x1="700" y1="200" x2="450" y2="270" stroke="#555" stroke-width="1.5" marker-end="url(#arr)"/>
+                  <line x1="715" y1="201" x2="748" y2="285" stroke="#555" stroke-width="1.5" marker-end="url(#arr)"/>
+                  <line x1="415" y1="300" x2="415" y2="335" stroke="#555" stroke-width="1.5" marker-end="url(#arr)"/>
+                  <line x1="610" y1="395" x2="725" y2="525" stroke="#555" stroke-width="1.5" marker-end="url(#arr)"/>
+                  <line x1="415" y1="490" x2="415" y2="530" stroke="#555" stroke-width="1.5" marker-end="url(#arr)"/>
+                  <line x1="415" y1="555" x2="415" y2="620" stroke="#555" stroke-width="1.5" marker-end="url(#arr)"/>
+                  <text x="380" y="595" font-size="9" fill="#555">YES (CSIS)</text>
+                  <line x1="455" y1="542" x2="530" y2="590" stroke="#555" stroke-width="1.5" marker-end="url(#arr)"/>
+                  <text x="460" y="568" font-size="9" fill="#c62828">NO</text>
+                  <line x1="570" y1="660" x2="460" y2="700" stroke="#555" stroke-width="1.5" marker-end="url(#arr)"/>
+                  <line x1="415" y1="655" x2="415" y2="700" stroke="#555" stroke-width="1.5" marker-end="url(#arr)"/>
+                  <line x1="460" y1="730" x2="660" y2="830" stroke="#e53935" stroke-width="1.5" stroke-dasharray="6,4" marker-end="url(#arr-red)"/>
+                  <line x1="218" y1="355" x2="355" y2="348" stroke="#e53935" stroke-width="1.5" stroke-dasharray="6,4" marker-end="url(#arr-red)"/>
+                  <line x1="755" y1="321" x2="750" y2="345" stroke="#555" stroke-width="1.5" marker-end="url(#arr)"/>
+                  <line x1="706" y1="369" x2="610" y2="395" stroke="#555" stroke-width="1.5" marker-end="url(#arr)"/>
+                  <text x="628" y="375" font-size="9" fill="#555">Inland</text>
+                  <polyline points="774,369 995,369 995,415" stroke="#555" stroke-width="1.5" fill="none" marker-end="url(#arr)"/>
+                  <text x="860" y="364" font-size="9" fill="#555">Outland</text>
+                  <line x1="950" y1="433" x2="880" y2="433" stroke="#555" stroke-width="1.5" marker-end="url(#arr)"/>
+                  <text x="900" y="428" font-size="9" fill="#c62828">NO</text>
+                  <line x1="790" y1="525" x2="855" y2="451" stroke="#555" stroke-width="1.5" marker-end="url(#arr)"/>
+                  <text x="774" y="478" font-size="9" fill="#c62828">NO</text>
+                  <line x1="855" y1="451" x2="855" y2="500" stroke="#e53935" stroke-width="1.5" stroke-dasharray="6,4" marker-end="url(#arr-red)"/>
+                  <text x="858" y="482" font-size="9" fill="#2e7d32">YES</text>
+                  <line x1="995" y1="451" x2="900" y2="500" stroke="#555" stroke-width="1.5" marker-end="url(#arr)"/>
+                  <text x="935" y="470" font-size="9" fill="#2e7d32">YES</text>
+                  <line x1="860" y1="534" x2="860" y2="565" stroke="#555" stroke-width="1.5" marker-end="url(#arr)"/>
+                  <line x1="860" y1="599" x2="840" y2="710" stroke="#555" stroke-width="1.5" marker-end="url(#arr)"/>
+                  <line x1="757" y1="550" x2="790" y2="710" stroke="#555" stroke-width="1.5" marker-end="url(#arr)"/>
+                  <text x="748" y="638" font-size="9" fill="#2e7d32">YES</text>
+                  <line x1="1060" y1="340" x2="1060" y2="460" stroke="#555" stroke-width="1.5" marker-end="url(#arr)"/>
+                  <line x1="1060" y1="495" x2="1060" y2="710" stroke="#555" stroke-width="1.5" marker-end="url(#arr)"/>
+                  <line x1="1010" y1="730" x2="780" y2="835" stroke="#e53935" stroke-width="1.5" stroke-dasharray="6,4" marker-end="url(#arr-red)"/>
+                  <line x1="795" y1="730" x2="760" y2="830" stroke="#e53935" stroke-width="1.5" stroke-dasharray="6,4" marker-end="url(#arr-red)"/>
+                  <line x1="215" y1="725" x2="690" y2="840" stroke="#e53935" stroke-width="1.5" stroke-dasharray="6,4" marker-end="url(#arr-red)"/>
+                  <line x1="750" y1="195" x2="1060" y2="295" stroke="#555" stroke-width="1.5" marker-end="url(#arr)"/>
+                  <line x1="1060" y1="360" x2="1060" y2="370" stroke="#555" stroke-width="1" stroke-dasharray="2,2"/>
+                  <line x1="1030" y1="478" x2="465" y2="471" stroke="#e53935" stroke-width="1.5" stroke-dasharray="6,4" marker-end="url(#arr-red)"/>
+                  <text x="580" y="467" font-size="9" fill="#e53935">Eligibility passed or recommended</text>
+                  <line x1="415" y1="348" x2="415" y2="460" stroke="#e53935" stroke-width="1.5" stroke-dasharray="6,4"/>
+                  <line x1="730" y1="870" x2="730" y2="910" stroke="#1565c0" stroke-width="2" marker-end="url(#arr-blue)"/>
+                  <polyline points="700,933 595,933 595,970" stroke="#555" stroke-width="1.5" fill="none" marker-end="url(#arr)"/>
+                  <text x="630" y="928" font-size="9" fill="#555">Inland</text>
+                  <polyline points="762,933 895,933 895,970" stroke="#555" stroke-width="1.5" fill="none" marker-end="url(#arr)"/>
+                  <text x="800" y="928" font-size="9" fill="#555">Outland</text>
+                  <line x1="595" y1="1006" x2="595" y2="1030" stroke="#555" stroke-width="1.5" marker-end="url(#arr)"/>
+                  <line x1="895" y1="1006" x2="895" y2="1030" stroke="#555" stroke-width="1.5" marker-end="url(#arr)"/>
+                  <line x1="595" y1="1066" x2="710" y2="1095" stroke="#555" stroke-width="1.5" marker-end="url(#arr)"/>
+                  <line x1="895" y1="1066" x2="778" y2="1095" stroke="#555" stroke-width="1.5" marker-end="url(#arr)"/>
+                  <line x1="730" y1="1131" x2="730" y2="1160" stroke="#555" stroke-width="1.5" marker-end="url(#arr)"/>
+                </svg>
+
+                <div class="fc-node fc-circle fc-start-green" style="left:30px;top:78px;width:46px;height:46px;" data-tip="申请开始">Start</div>
+                <div class="fc-node fc-rect fc-blue" style="left:125px;top:78px;width:80px;height:40px;" data-tip="AR: Application Receipt. The date IRCC receives your application.">AR</div>
+                <div class="fc-node fc-diamond fc-white-border" style="left:255px;top:78px;width:62px;height:42px;" data-tip="R-10 Qualification Check: IRCC checks if the application meets minimum requirements (R-10)."><span>Qualify<br>R-10</span></div>
+                <div class="fc-node fc-pill fc-pink" style="left:370px;top:80px;width:60px;height:36px;" data-tip="Returned: Application returned, usually with a refund.">Returned</div>
+                <div class="fc-node fc-rect fc-blue" style="left:120px;top:10px;width:90px;height:36px;" data-tip="Prepare the application again and pay. You can use old payment receipts.">Prepare app<br>again & pay</div>
+                <div class="fc-node fc-rect fc-pink" style="left:480px;top:80px;width:110px;height:36px;" data-tip="Planning to Re-apply: Decision point after a returned application.">Planning to<br>Re-apply</div>
+                <div class="fc-node fc-circle fc-end-red" style="left:650px;top:78px;width:44px;height:44px;" data-tip="End: Process ends, no further application.">End</div>
+                <div class="fc-node fc-rect fc-white-border" style="left:125px;top:165px;width:80px;height:38px;" data-tip="Web Form: Online form used to submit application information.">Web form</div>
+                <div class="fc-node fc-rect fc-white-border" style="left:265px;top:165px;width:70px;height:38px;" data-tip="PVO/SVO: Processing Officer / Secondary Verification Officer.">PVO/SVO</div>
+                <div class="fc-node fc-rect fc-green" style="left:660px;top:165px;width:60px;height:36px;" data-tip="AOR: Acknowledgement of Receipt. IRCC may conduct future reviews or update applicant records at any step.">AOR</div>
+                <div class="fc-node fc-rect fc-white-border" style="left:265px;top:240px;width:70px;height:32px;" data-tip="BIL: Biometric Information Letter — instructs applicant to submit biometrics.">BIL</div>
+                <div class="fc-node fc-rect fc-white-border" style="left:155px;top:295px;width:70px;height:32px;" data-tip="ADR: Additional Document Request — IRCC requests missing information.">ADR</div>
+                <div class="fc-node fc-rect fc-blue" style="left:175px;top:335px;width:85px;height:40px;" data-tip="Biometrics Collection: Fingerprints and photo collected at a Visa Application Centre (VAC).">Biometrics<br>collection</div>
+                <div class="fc-node fc-rect fc-light-blue" style="left:350px;top:270px;width:130px;height:32px;" data-tip="Info sharing in Five Eyes countries: Information shared between US, UK, Australia, NZ, and Canada.">Info sharing<br>(Five Eyes)</div>
+                <div class="fc-node fc-rect fc-light-blue" style="left:355px;top:310px;width:110px;height:32px;" data-tip="Info sharing check between partner agencies.">Info sharing</div>
+                <div class="fc-node fc-rect fc-light-blue" style="left:355px;top:348px;width:110px;height:32px;" data-tip="Criminality check: IRCC reviews the applicant's criminal history.">criminality</div>
+                <div class="fc-node fc-rect fc-light-blue" style="left:520px;top:360px;width:90px;height:70px;" data-tip="Medical RMO: Regional Medical Officer. IRCC sends the request to RMO for medical assessment.">Medical<br>RMO<br><small style="font-size:9px">(IRCC sends<br>request to RMO)</small></div>
+                <div class="fc-node fc-rect fc-light-blue" style="left:355px;top:390px;width:120px;height:32px;" data-tip="Medical validity (Inland only): Validity check for medical exam results — applies only to inland applicants.">Medical validity<br>(Inland only)</div>
+                <div class="fc-node fc-rect fc-light-blue" style="left:355px;top:455px;width:110px;height:32px;" data-tip="Security check: Led by IRCC, may involve CBSA and CSIS.">Security check</div>
+                <div class="fc-node fc-rect fc-light-blue" style="left:355px;top:530px;width:115px;height:32px;" data-tip="Only Record check: Determines whether a deeper investigation is required.">Only Record check</div>
+                <div class="fc-node fc-rect fc-light-blue" style="left:355px;top:620px;width:80px;height:40px;" data-tip="CSIS: Canadian Security Intelligence Service — conducts in-depth security investigation.">CSIS</div>
+                <div class="fc-node fc-rect fc-pink" style="left:520px;top:620px;width:110px;height:40px;" data-tip="Comprehensive check: Full in-depth review. Causes Exceptional Delay.">Comprehensive<br><span style="color:#b71c1c;font-size:9px">Exceptional Delay</span></div>
+                <div class="fc-node fc-rect fc-green" style="left:390px;top:700px;width:130px;height:32px;" data-tip="Milestone: Background Check passed.">Background<br>Check passed</div>
+                <div class="fc-node fc-rect fc-green" style="left:130px;top:705px;width:105px;height:32px;" data-tip="Milestone: Biometrics Completed.">Biometrics<br>Completed</div>
+                <div class="fc-node fc-rect fc-light-blue" style="left:710px;top:285px;width:90px;height:36px;" data-tip="Medical: The medical examination stage.">Medical</div>
+                <div class="fc-node fc-diamond fc-white-border" style="left:706px;top:345px;width:68px;height:48px;" data-tip="Inland or Outland?"><span>Inland/<br>Outland?</span></div>
+                <div class="fc-node fc-rect fc-white-border" style="left:805px;top:415px;width:80px;height:36px;" data-tip="Medical Required: Determines if a medical exam is needed.">Medical<br>Required</div>
+                <div class="fc-node fc-rect fc-blue" style="left:950px;top:415px;width:90px;height:36px;" data-tip="Upfront Medical: Applicant completed medical exam before applying.">Upfront<br>medical</div>
+                <div class="fc-node fc-rect fc-blue" style="left:820px;top:500px;width:80px;height:34px;" data-tip="Do Medical: Applicant is required to undergo a medical exam.">Do Medical</div>
+                <div class="fc-node fc-rect fc-white-border" style="left:725px;top:516px;width:65px;height:34px;" data-tip="Med Okay: Is the medical exam result acceptable?">Med Okay</div>
+                <div class="fc-node fc-rect fc-light-blue" style="left:820px;top:565px;width:80px;height:34px;" data-tip="Medical Review: Further assessment when medical results require review.">Medical Review</div>
+                <div class="fc-node fc-rect fc-green" style="left:745px;top:705px;width:100px;height:32px;" data-tip="Milestone: Medical Passed.">Medical<br>Passed</div>
+                <div class="fc-node fc-rect fc-light-blue" style="left:1010px;top:295px;width:100px;height:36px;" data-tip="Eligibility: Eligibility review. If in doubt, goes for ghost update review.">Eligibility</div>
+                <div class="fc-node fc-doc fc-gray" style="left:1030px;top:455px;width:60px;height:45px;" data-tip="PAL: Port of Entry Letter of Introduction. Outland applicants receive PAL; inland applicants also get PAL as part of the process.">PAL</div>
+                <div class="fc-node fc-rect fc-green" style="left:1000px;top:705px;width:110px;height:32px;" data-tip="Milestone: Eligibility Passed.">Eligibility<br>passed</div>
+                <div class="fc-node fc-rect fc-dark-green" style="left:670px;top:825px;width:120px;height:46px;" data-tip="Final Decision PVO: The Processing/Verification Officer makes the final decision. All milestones must be complete.">Final Decision<br>PVO</div>
+                <div class="fc-node fc-diamond fc-white-border" style="left:698px;top:910px;width:64px;height:46px;"><span>Inland/<br>Outland?</span></div>
+                <div class="fc-node fc-rect fc-white-border" style="left:570px;top:970px;width:50px;height:36px;" data-tip="P1: Stage 1 processing. eCOPR is generated here.">P1</div>
+                <div class="fc-node fc-rect fc-white-border" style="left:570px;top:1030px;width:50px;height:36px;" data-tip="P2: Stage 2 processing.">P2</div>
+                <div class="fc-node fc-rect fc-white-border" style="left:870px;top:970px;width:50px;height:36px;" data-tip="PPR: Passport Request — IRCC requests you submit your passport.">PPR</div>
+                <div class="fc-node fc-rect fc-white-border" style="left:845px;top:1030px;width:100px;height:36px;" data-tip="Stamping - Travel and Arrival: Passport gets stamped at port of entry.">Stamping -<br>Travel & Arrival</div>
+                <div class="fc-node fc-rect fc-blue" style="left:693px;top:1095px;width:75px;height:36px;" data-tip="eCOPR: Electronic Confirmation of Permanent Residence — generated before the PR Card is issued.">eCOPR</div>
+                <div class="fc-node fc-rect fc-dark-green" style="left:683px;top:1160px;width:95px;height:44px;" data-tip="PR Card: Permanent Resident Card — the final goal of the entire process.">🍁 PR Card</div>
+
+              </div>
+            </div>
+          </div>
+        </section>
+      </section>
+
+      <!-- 流程步骤 -->
+      <section class="process-card">
+        <h2 data-i18n="processTitle">PR 流程步骤</h2>
+        <p class="process-tip" data-i18n="processTip">基于你提供的过去一年样本经验总结，实际流程会因个案而不同。</p>
+        <ol id="processList" class="process-list"></ol>
+      </section>
+
+      <!-- 退件原因 -->
+      <section class="returns">
+        <h2 data-i18n="returnsTitle">退件原因</h2>
+        <p class="return-count" id="returnCount">总条数: --</p>
+        <div id="reasonChart" class="reason-chart"></div>
+      </section>
+
+      <!-- 简写说明 -->
+      <section class="abbr-card">
+        <h2 data-i18n="abbrTitle">简写对应全称</h2>
+        <p class="abbr-tip" data-i18n="abbrTip">按字母排序，保留重复缩写的多种含义。</p>
+        <div class="abbr-table-wrap">
+          <table class="abbr-table">
+            <thead>
+              <tr>
+                <th data-i18n="abbrCol1">缩写</th>
+                <th data-i18n="abbrCol2">全称</th>
+              </tr>
+            </thead>
+            <tbody id="abbrTableBody"></tbody>
+          </table>
+        </div>
+      </section>
+    </main>
+
+    <div class="fc-tooltip" id="fcTooltip"></div>
+
+    <script>
+      const fcTooltip = document.getElementById('fcTooltip');
+      document.querySelectorAll('[data-tip]').forEach(el => {
+        el.addEventListener('mouseenter', () => {
+          fcTooltip.textContent = el.getAttribute('data-tip');
+          fcTooltip.style.opacity = '1';
+        });
+        el.addEventListener('mousemove', e => {
+          fcTooltip.style.left = (e.clientX + 14) + 'px';
+          fcTooltip.style.top  = (e.clientY - 10) + 'px';
+        });
+        el.addEventListener('mouseleave', () => {
+          fcTooltip.style.opacity = '0';
+        });
+      });
+    </script>
+    <script type="module" src="./app.js"></script>
+  </body>
+</html>

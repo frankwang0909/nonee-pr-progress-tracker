@@ -1,0 +1,85 @@
+{
+  "asOf": "2026-03-08T17:49:06.750Z",
+  "totalRecords": 4661,
+  "progress": {
+    "aor": {
+      "submissionDate": "2025-07-14",
+      "stageDate": "2026-03-07",
+      "sampleCount": 9
+    },
+    "fd": {
+      "submissionDate": "2025-03-25",
+      "stageDate": "2026-03-05",
+      "sampleCount": 3
+    },
+    "p1": {
+      "submissionDate": "2025-02-14",
+      "stageDate": "2026-03-05",
+      "sampleCount": 2
+    },
+    "p2": {
+      "submissionDate": "2025-01-18",
+      "stageDate": "2026-03-07",
+      "sampleCount": 3
+    },
+    "ecopr": {
+      "submissionDate": "2025-01-18",
+      "stageDate": "2026-03-04",
+      "sampleCount": 2
+    },
+    "prCard": null
+  },
+  "returns": {
+    "count": 192,
+    "reasons": [
+      {
+        "reason": "ADR (Additional Documents Requested/Required) - IMM5669 (Schedule A - Background/Declaration) / Schedule A issue",
+        "count": 57
+      },
+      {
+        "reason": "ADR (Additional Documents Requested/Required) - PCC (Police Clearance Certificate) issue",
+        "count": 32
+      },
+      {
+        "reason": "ADR (Additional Documents Requested/Required) - IMM5669 (Schedule A - Background/Declaration) / Schedule A issue; PCC (Police Clearance Certificate) issue",
+        "count": 9
+      },
+      {
+        "reason": "Returned - BC (Birth Certificate) issue",
+        "count": 7
+      },
+      {
+        "reason": "ADR (Additional Documents Requested/Required) - BIL (Biometrics Instruction Letter) / biometrics fee issue",
+        "count": 5
+      },
+      {
+        "reason": "ADR (Additional Documents Requested/Required) - BC (Birth Certificate) issue",
+        "count": 5
+      },
+      {
+        "reason": "ADR (Additional Documents Requested/Required)",
+        "count": 5
+      },
+      {
+        "reason": "Returned - IMM5406 (Additional Family Information form) issue",
+        "count": 5
+      },
+      {
+        "reason": "ADR (Additional Documents Requested/Required) - IMM5406 (Additional Family Information form) issue",
+        "count": 3
+      },
+      {
+        "reason": "Returned (unspecified)",
+        "count": 2
+      },
+      {
+        "reason": "Returned - IMM5669 (Schedule A - Background/Declaration) / Schedule A issue",
+        "count": 2
+      },
+      {
+        "reason": "ADR (Additional Documents Requested/Required) - IMM5476",
+        "count": 2
+      }
+    ]
+  }
+}
