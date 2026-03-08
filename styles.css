@@ -490,6 +490,26 @@ body {
   border-top: 1px solid var(--border);
   margin-top: 8px;
 }
+.footer-star { margin-top: 10px; }
+.star-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 16px;
+  border-radius: 20px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  color: var(--text);
+  font-size: 13px;
+  font-weight: 500;
+  text-decoration: none;
+  transition: border-color .2s, box-shadow .2s;
+}
+.star-btn:hover {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 20%, transparent);
+  color: var(--accent);
+}
 
 /* ── Responsive ───────────────────────────────────────── */
 @media (max-width: 860px) {
