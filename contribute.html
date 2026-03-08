@@ -11,7 +11,7 @@
       <section class="hero">
         <div class="hero-top">
           <h1 data-i18n="title">贡献数据</h1>
-          <button class="lang-btn" id="langToggle" type="button">EN</button>
+          <button class="lang-btn" id="langToggle" type="button">中文</button>
         </div>
         <p class="sources-tip" data-i18n="subtitle">你可以在对应月份的共享 Google Sheet 中补充或修正记录，帮助提升统计准确性。</p>
         <div class="hero-actions">
@@ -87,7 +87,7 @@
         tbody.appendChild(tr);
       });
 
-      let currentLang = localStorage.getItem('lang') || 'zh';
+      let currentLang = localStorage.getItem('lang') || 'en';
 
       const applyTranslations = () => {
         const t = translations[currentLang];

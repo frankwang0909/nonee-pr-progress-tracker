@@ -208,7 +208,7 @@ const translations = {
   },
 };
 
-let currentLang = localStorage.getItem('lang') || 'zh';
+let currentLang = localStorage.getItem('lang') || 'en';
 let lastSummary = null;
 
 const asLocalDate = (iso) => {
