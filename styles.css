@@ -481,6 +481,16 @@ body {
 .flow.parallel { stroke: #37d67a; stroke-dasharray: 8 6; }
 .legend { font-size: 12px; fill: #a5b3c5; }
 
+/* ── Footer ───────────────────────────────────────────── */
+.site-footer {
+  text-align: center;
+  padding: 16px 20px;
+  font-size: 13px;
+  color: var(--muted);
+  border-top: 1px solid var(--border);
+  margin-top: 8px;
+}
+
 /* ── Responsive ───────────────────────────────────────── */
 @media (max-width: 860px) {
   .wrap { padding: 16px 12px 48px; gap: 12px; }

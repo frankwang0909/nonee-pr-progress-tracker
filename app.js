@@ -189,6 +189,7 @@ const translations = {
     abbrCol1:    '缩写',
     abbrCol2:    '全称',
     langBtn:     'EN',
+    disclaimer:  '本看板数据来源于公开共享的 Google Sheets，仅供参考，不构成任何移民建议。实际情况可能因个案而异，请以官方渠道信息为准。',
   },
   en: {
     heroTitle:   'NON EE PR Progress Dashboard',
@@ -205,6 +206,7 @@ const translations = {
     abbrCol1:    'Abbr.',
     abbrCol2:    'Full Name',
     langBtn:     '中文',
+    disclaimer:  'Data on this dashboard is sourced from publicly shared Google Sheets and is for reference only. It does not constitute immigration advice. Actual outcomes may vary by case — always refer to official sources.',
   },
 };
 
