@@ -1,15 +1,15 @@
 {
-  "asOf": "2026-03-08T20:31:29.804Z",
-  "totalRecords": 4666,
+  "asOf": "2026-03-09T16:52:11.855Z",
+  "totalRecords": 4683,
   "progress": {
     "aor": {
-      "submissionDate": "2025-07-17",
-      "stageDate": "2026-03-06",
-      "sampleCount": 1
+      "submissionDate": "2025-07-18",
+      "stageDate": "2026-03-09",
+      "sampleCount": 3
     },
     "fd": {
       "submissionDate": "2025-03-25",
-      "stageDate": "2026-03-05",
+      "stageDate": "2026-03-06",
       "sampleCount": 3
     },
     "p1": {
@@ -30,7 +30,7 @@
     "prCard": null
   },
   "returns": {
-    "count": 192,
+    "count": 191,
     "reasons": [
       {
         "reason": "ADR (Additional Documents Requested/Required) - IMM5669 (Schedule A - Background/Declaration) / Schedule A issue",
@@ -38,7 +38,7 @@
       },
       {
         "reason": "ADR (Additional Documents Requested/Required) - PCC (Police Clearance Certificate) issue",
-        "count": 32
+        "count": 31
       },
       {
         "reason": "ADR (Additional Documents Requested/Required) - IMM5669 (Schedule A - Background/Declaration) / Schedule A issue; PCC (Police Clearance Certificate) issue",
