@@ -1,36 +1,36 @@
 {
-  "asOf": "2026-03-09T16:52:11.855Z",
-  "totalRecords": 4683,
+  "asOf": "2026-03-10T16:52:00.424Z",
+  "totalRecords": 4747,
   "progress": {
     "aor": {
-      "submissionDate": "2025-07-18",
-      "stageDate": "2026-03-09",
-      "sampleCount": 3
+      "submissionDate": "2025-07-27",
+      "stageDate": "2026-03-10",
+      "sampleCount": 1
     },
     "fd": {
-      "submissionDate": "2025-03-25",
-      "stageDate": "2026-03-06",
-      "sampleCount": 3
+      "submissionDate": "2025-03-26",
+      "stageDate": "2026-03-09",
+      "sampleCount": 1
     },
     "p1": {
       "submissionDate": "2025-03-25",
-      "stageDate": "2026-03-06",
-      "sampleCount": 1
+      "stageDate": "2026-03-09",
+      "sampleCount": 2
     },
     "p2": {
-      "submissionDate": "2025-03-04",
-      "stageDate": "2026-03-03",
+      "submissionDate": "2025-03-25",
+      "stageDate": "2026-03-09",
       "sampleCount": 1
     },
     "ecopr": {
-      "submissionDate": "2025-01-27",
-      "stageDate": "2026-03-03",
+      "submissionDate": "2025-03-25",
+      "stageDate": "2026-03-09",
       "sampleCount": 1
     },
     "prCard": null
   },
   "returns": {
-    "count": 191,
+    "count": 193,
     "reasons": [
       {
         "reason": "ADR (Additional Documents Requested/Required) - IMM5669 (Schedule A - Background/Declaration) / Schedule A issue",
@@ -65,12 +65,12 @@
         "count": 5
       },
       {
-        "reason": "ADR (Additional Documents Requested/Required) - IMM5406 (Additional Family Information form) issue",
+        "reason": "Returned (unspecified)",
         "count": 3
       },
       {
-        "reason": "Returned (unspecified)",
-        "count": 2
+        "reason": "ADR (Additional Documents Requested/Required) - IMM5406 (Additional Family Information form) issue",
+        "count": 3
       },
       {
         "reason": "Returned - IMM5669 (Schedule A - Background/Declaration) / Schedule A issue",
