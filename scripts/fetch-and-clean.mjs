@@ -567,6 +567,37 @@ const parseSource = async (source) => {
   };
 };
 
+const extractRemarksStats = (records) => {
+  const aorPalDays = [];
+  const palFdDays = [];
+
+  for (const record of records) {
+    const rem = record.remarks;
+    if (!rem || typeof rem !== 'string') continue;
+
+    const m1 = rem.match(/AOR\s*->\s*PAL\s*:\s*(\d+)/i);
+    const m2 = rem.match(/PAL\s*->\s*FD\s*:\s*(\d+)/i);
+
+    if (m1) {
+      const v = parseInt(m1[1], 10);
+      if (v >= 1 && v <= 365) aorPalDays.push(v);
+    }
+    if (m2) {
+      const v = parseInt(m2[1], 10);
+      if (v >= 1 && v <= 500) palFdDays.push(v);
+    }
+  }
+
+  return {
+    aorToPal: aorPalDays.length
+      ? { avgDays: Math.round(aorPalDays.reduce((a, b) => a + b, 0) / aorPalDays.length), sampleCount: aorPalDays.length }
+      : null,
+    palToFd: palFdDays.length
+      ? { avgDays: Math.round(palFdDays.reduce((a, b) => a + b, 0) / palFdDays.length), sampleCount: palFdDays.length }
+      : null,
+  };
+};
+
 const aggregateDashboard = (records) => {
   const aorFrontier = buildStageFrontierByDay(records, extractAorDate, (record, submission, stageDate) => {
     if (!shouldApplyAorLagFilter(record)) return true;
@@ -622,6 +653,8 @@ const aggregateDashboard = (records) => {
     };
   };
 
+  const remarksStats = extractRemarksStats(records);
+
   return {
     asOf: new Date().toISOString(),
     totalRecords: records.length,
@@ -637,6 +670,7 @@ const aggregateDashboard = (records) => {
       count: returnedRecords.length,
       reasons: returnReasons,
     },
+    remarksStats,
   };
 };
 

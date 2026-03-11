@@ -481,6 +481,39 @@ body {
 .flow.parallel { stroke: #37d67a; stroke-dasharray: 8 6; }
 .legend { font-size: 12px; fill: #a5b3c5; }
 
+/* ── Remarks Stats Section ────────────────────────────── */
+.remarks-stats-section {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 24px 24px 20px;
+  box-shadow: var(--shadow-sm);
+}
+
+.remarks-stats-section h2 {
+  margin: 0 0 4px;
+  font-size: 17px;
+  font-weight: 700;
+  color: var(--ink);
+  letter-spacing: -0.01em;
+}
+
+.remarks-tip {
+  font-size: 12.5px;
+  color: var(--muted);
+  margin: 4px 0 14px;
+  line-height: 1.5;
+}
+
+.remarks-stats-section .card::before {
+  background: linear-gradient(90deg, var(--blue) 0%, var(--blue-d) 100%);
+}
+
+.remarks-stats-section .card .value {
+  font-size: 32px;
+  color: var(--blue-d);
+}
+
 /* ── Footer ───────────────────────────────────────────── */
 .site-footer {
   text-align: center;

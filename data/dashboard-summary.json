@@ -1,11 +1,11 @@
 {
-  "asOf": "2026-03-10T16:52:00.424Z",
-  "totalRecords": 4747,
+  "asOf": "2026-03-11T01:12:17.481Z",
+  "totalRecords": 4775,
   "progress": {
     "aor": {
-      "submissionDate": "2025-07-27",
+      "submissionDate": "2025-08-01",
       "stageDate": "2026-03-10",
-      "sampleCount": 1
+      "sampleCount": 2
     },
     "fd": {
       "submissionDate": "2025-03-26",
@@ -14,8 +14,8 @@
     },
     "p1": {
       "submissionDate": "2025-03-25",
-      "stageDate": "2026-03-09",
-      "sampleCount": 2
+      "stageDate": "2026-03-10",
+      "sampleCount": 3
     },
     "p2": {
       "submissionDate": "2025-03-25",
@@ -30,11 +30,11 @@
     "prCard": null
   },
   "returns": {
-    "count": 193,
+    "count": 196,
     "reasons": [
       {
         "reason": "ADR (Additional Documents Requested/Required) - IMM5669 (Schedule A - Background/Declaration) / Schedule A issue",
-        "count": 57
+        "count": 58
       },
       {
         "reason": "ADR (Additional Documents Requested/Required) - PCC (Police Clearance Certificate) issue",
@@ -49,6 +49,10 @@
         "count": 7
       },
       {
+        "reason": "Returned - IMM5406 (Additional Family Information form) issue",
+        "count": 6
+      },
+      {
         "reason": "ADR (Additional Documents Requested/Required) - BIL (Biometrics Instruction Letter) / biometrics fee issue",
         "count": 5
       },
@@ -61,11 +65,11 @@
         "count": 5
       },
       {
-        "reason": "Returned - IMM5406 (Additional Family Information form) issue",
-        "count": 5
+        "reason": "Returned (unspecified)",
+        "count": 3
       },
       {
-        "reason": "Returned (unspecified)",
+        "reason": "Returned - IMM5669 (Schedule A - Background/Declaration) / Schedule A issue",
         "count": 3
       },
       {
@@ -73,13 +77,19 @@
         "count": 3
       },
       {
-        "reason": "Returned - IMM5669 (Schedule A - Background/Declaration) / Schedule A issue",
-        "count": 2
-      },
-      {
         "reason": "ADR (Additional Documents Requested/Required) - IMM5476",
         "count": 2
       }
     ]
+  },
+  "remarksStats": {
+    "aorToPal": {
+      "avgDays": 17,
+      "sampleCount": 418
+    },
+    "palToFd": {
+      "avgDays": 44,
+      "sampleCount": 146
+    }
   }
 }

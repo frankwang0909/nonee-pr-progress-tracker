@@ -175,40 +175,48 @@ const processSteps = {
 
 const translations = {
   zh: {
-    heroTitle:   'NON EE PR 进度看板',
-    asOf:        '更新时间',
-    sourceNote:  '数据来源：公开共享 Google Sheets 数据。',
-    contribute:  '贡献数据 / 查看全部数据源',
-    diagramTitle:'PR 流程图',
-    processTitle:'PR 流程步骤',
-    processTip:  '基于你提供的过去一年样本经验总结，实际流程会因个案而不同。',
-    returnsTitle:'退件原因',
-    returnCount: (n) => `总条数: ${n}`,
-    abbrTitle:   '简写对应全称',
-    abbrTip:     '按字母排序，保留重复缩写的多种含义。',
-    abbrCol1:    '缩写',
-    abbrCol2:    '全称',
-    langBtn:     'EN',
-    disclaimer:  '本看板数据来源于公开共享的 Google Sheets，仅供参考，不构成任何移民建议。实际情况可能因个案而异，请以官方渠道信息为准。',
-    starBtn:     '觉得有用？给个 Star ⭐',
+    heroTitle:    'NON EE PR 进度看板',
+    asOf:         '更新时间',
+    sourceNote:   '数据来源：公开共享 Google Sheets 数据。',
+    contribute:   '贡献数据 / 查看全部数据源',
+    diagramTitle: 'PR 流程图',
+    processTitle: 'PR 流程步骤',
+    processTip:   '基于你提供的过去一年样本经验总结，实际流程会因个案而不同。',
+    returnsTitle: '退件原因',
+    returnCount:  (n) => `总条数: ${n}`,
+    abbrTitle:    '简写对应全称',
+    abbrTip:      '按字母排序，保留重复缩写的多种含义。',
+    abbrCol1:     '缩写',
+    abbrCol2:     '全称',
+    langBtn:      'EN',
+    disclaimer:   '本看板数据来源于公开共享的 Google Sheets，仅供参考，不构成任何移民建议。实际情况可能因个案而异，请以官方渠道信息为准。',
+    starBtn:      '觉得有用？给个 Star ⭐',
+    remarksTitle: '阶段平均用时',
+    remarksTip:   '基于数据源 REMARKS 列中的样本提取计算，过滤异常值后取平均。',
+    avgDaysUnit:  '天（平均）',
+    sampleCount:  (n) => `${n} 个样本`,
   },
   en: {
-    heroTitle:   'NON EE PR Progress Dashboard',
-    asOf:        'Last updated',
-    sourceNote:  'Data source: Publicly shared Google Sheets data.',
-    contribute:  'Contribute Data / View All Sources',
-    diagramTitle:'PR Application Flowchart',
-    processTitle:'PR Process Steps',
-    processTip:  'Based on sample experience from the past year. Actual process may vary by individual case.',
-    returnsTitle:'Return Reasons',
-    returnCount: (n) => `Total: ${n}`,
-    abbrTitle:   'Abbreviation Reference',
-    abbrTip:     'Sorted alphabetically, with multiple meanings for duplicate abbreviations.',
-    abbrCol1:    'Abbr.',
-    abbrCol2:    'Full Name',
-    langBtn:     '中文',
-    disclaimer:  'Data on this dashboard is sourced from publicly shared Google Sheets and is for reference only. It does not constitute immigration advice. Actual outcomes may vary by case — always refer to official sources.',
-    starBtn:     'Find it useful? Give it a Star ⭐',
+    heroTitle:    'NON EE PR Progress Dashboard',
+    asOf:         'Last updated',
+    sourceNote:   'Data source: Publicly shared Google Sheets data.',
+    contribute:   'Contribute Data / View All Sources',
+    diagramTitle: 'PR Application Flowchart',
+    processTitle: 'PR Process Steps',
+    processTip:   'Based on sample experience from the past year. Actual process may vary by individual case.',
+    returnsTitle: 'Return Reasons',
+    returnCount:  (n) => `Total: ${n}`,
+    abbrTitle:    'Abbreviation Reference',
+    abbrTip:      'Sorted alphabetically, with multiple meanings for duplicate abbreviations.',
+    abbrCol1:     'Abbr.',
+    abbrCol2:     'Full Name',
+    langBtn:      '中文',
+    disclaimer:   'Data on this dashboard is sourced from publicly shared Google Sheets and is for reference only. It does not constitute immigration advice. Actual outcomes may vary by case — always refer to official sources.',
+    starBtn:      'Find it useful? Give it a Star ⭐',
+    remarksTitle: 'Average Stage Duration',
+    remarksTip:   'Computed from REMARKS column in source data, with outliers filtered out.',
+    avgDaysUnit:  'days (avg)',
+    sampleCount:  (n) => `${n} samples`,
   },
 };
 
@@ -232,6 +240,34 @@ const asLocalTime = (iso) => {
 const compactReturnReasonLabel = (reason) =>
   String(reason || '').replaceAll('ADR (Additional Documents Requested/Required)', 'ADR');
 
+const renderRemarksStats = (summary) => {
+  const t = translations[currentLang];
+  const remarksGrid = document.getElementById('remarksGrid');
+  if (!remarksGrid) return;
+
+  remarksGrid.innerHTML = '';
+
+  const stats = summary.remarksStats;
+  if (!stats) return;
+
+  const entries = [
+    { label: 'AOR → PAL', data: stats.aorToPal },
+    { label: 'PAL → FD',  data: stats.palToFd  },
+  ];
+
+  entries.forEach(({ label, data }) => {
+    if (!data) return;
+    const card = document.createElement('article');
+    card.className = 'card';
+    card.innerHTML = `
+      <h3>${label}</h3>
+      <div class="value">${data.avgDays}</div>
+      <div class="meta">${t.avgDaysUnit} &nbsp;·&nbsp; ${t.sampleCount(data.sampleCount)}</div>
+    `;
+    remarksGrid.appendChild(card);
+  });
+};
+
 const renderDashboard = (summary) => {
   const t = translations[currentLang];
   const asOfNode = document.getElementById('asOf');
@@ -240,6 +276,7 @@ const renderDashboard = (summary) => {
   const reasonChart = document.getElementById('reasonChart');
 
   asOfNode.textContent = `${t.asOf}: ${asLocalTime(summary.asOf)}`;
+  renderRemarksStats(summary);
 
   progressGrid.innerHTML = '';
   stageLabels.forEach(([key, title]) => {
