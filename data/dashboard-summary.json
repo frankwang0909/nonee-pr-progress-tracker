@@ -1,11 +1,11 @@
 {
-  "asOf": "2026-03-11T16:44:17.693Z",
-  "totalRecords": 4799,
+  "asOf": "2026-03-12T16:54:42.049Z",
+  "totalRecords": 4844,
   "progress": {
     "aor": {
-      "submissionDate": "2025-08-03",
-      "stageDate": "2026-03-10",
-      "sampleCount": 1
+      "submissionDate": "2025-08-06",
+      "stageDate": "2026-03-12",
+      "sampleCount": 4
     },
     "fd": {
       "submissionDate": "2025-03-29",
@@ -19,54 +19,54 @@
     },
     "p2": {
       "submissionDate": "2025-03-25",
-      "stageDate": "2026-03-09",
-      "sampleCount": 1
+      "stageDate": "2026-03-11",
+      "sampleCount": 2
     },
     "ecopr": {
-      "submissionDate": "2025-03-25",
-      "stageDate": "2026-03-09",
+      "submissionDate": "2025-02-16",
+      "stageDate": "2026-03-11",
       "sampleCount": 1
     },
-    "prCard": null
+    "prCard": {
+      "submissionDate": "2025-01-18",
+      "stageDate": "2026-03-04",
+      "sampleCount": 1
+    }
   },
   "returns": {
-    "count": 199,
+    "count": 221,
     "reasons": [
       {
         "reason": "ADR (Additional Documents Requested/Required) - IMM5669 (Schedule A - Background/Declaration) / Schedule A issue",
-        "count": 60
+        "count": 69
       },
       {
         "reason": "ADR (Additional Documents Requested/Required) - PCC (Police Clearance Certificate) issue",
-        "count": 31
+        "count": 33
+      },
+      {
+        "reason": "Returned - BC (Birth Certificate) issue",
+        "count": 9
       },
       {
         "reason": "ADR (Additional Documents Requested/Required) - IMM5669 (Schedule A - Background/Declaration) / Schedule A issue; PCC (Police Clearance Certificate) issue",
         "count": 9
       },
       {
-        "reason": "Returned - BC (Birth Certificate) issue",
-        "count": 7
+        "reason": "ADR (Additional Documents Requested/Required) - BIL (Biometrics Instruction Letter) / biometrics fee issue",
+        "count": 8
       },
       {
         "reason": "Returned - IMM5406 (Additional Family Information form) issue",
         "count": 6
       },
       {
-        "reason": "ADR (Additional Documents Requested/Required) - BIL (Biometrics Instruction Letter) / biometrics fee issue",
-        "count": 5
+        "reason": "ADR (Additional Documents Requested/Required)",
+        "count": 6
       },
       {
         "reason": "ADR (Additional Documents Requested/Required) - BC (Birth Certificate) issue",
         "count": 5
-      },
-      {
-        "reason": "ADR (Additional Documents Requested/Required)",
-        "count": 5
-      },
-      {
-        "reason": "Returned (unspecified)",
-        "count": 3
       },
       {
         "reason": "Returned - IMM5669 (Schedule A - Background/Declaration) / Schedule A issue",
@@ -77,7 +77,11 @@
         "count": 3
       },
       {
-        "reason": "ADR (Additional Documents Requested/Required) - IMM5476",
+        "reason": "Returned (unspecified)",
+        "count": 2
+      },
+      {
+        "reason": "ADR (Additional Documents Requested/Required): IMM5476",
         "count": 2
       }
     ]
@@ -85,11 +89,11 @@
   "remarksStats": {
     "aorToPal": {
       "avgDays": 17,
-      "sampleCount": 423
+      "sampleCount": 440
     },
     "palToFd": {
-      "avgDays": 44,
-      "sampleCount": 153
+      "avgDays": 43,
+      "sampleCount": 164
     }
   }
 }
