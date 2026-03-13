@@ -1,55 +1,51 @@
 {
-  "asOf": "2026-03-12T16:54:42.049Z",
-  "totalRecords": 4844,
+  "asOf": "2026-03-13T05:05:13.769Z",
+  "totalRecords": 4859,
   "progress": {
     "aor": {
       "submissionDate": "2025-08-06",
       "stageDate": "2026-03-12",
-      "sampleCount": 4
+      "sampleCount": 16
     },
     "fd": {
-      "submissionDate": "2025-03-29",
-      "stageDate": "2026-03-11",
+      "submissionDate": "2025-03-31",
+      "stageDate": "2026-03-12",
       "sampleCount": 1
     },
     "p1": {
       "submissionDate": "2025-03-29",
       "stageDate": "2026-03-11",
-      "sampleCount": 1
+      "sampleCount": 3
     },
     "p2": {
       "submissionDate": "2025-03-25",
-      "stageDate": "2026-03-11",
-      "sampleCount": 2
+      "stageDate": "2026-03-12",
+      "sampleCount": 3
     },
     "ecopr": {
       "submissionDate": "2025-02-16",
       "stageDate": "2026-03-11",
-      "sampleCount": 1
+      "sampleCount": 2
     },
-    "prCard": {
-      "submissionDate": "2025-01-18",
-      "stageDate": "2026-03-04",
-      "sampleCount": 1
-    }
+    "prCard": null
   },
   "returns": {
-    "count": 221,
+    "count": 227,
     "reasons": [
       {
         "reason": "ADR (Additional Documents Requested/Required) - IMM5669 (Schedule A - Background/Declaration) / Schedule A issue",
-        "count": 69
+        "count": 72
       },
       {
         "reason": "ADR (Additional Documents Requested/Required) - PCC (Police Clearance Certificate) issue",
         "count": 33
       },
       {
-        "reason": "Returned - BC (Birth Certificate) issue",
-        "count": 9
+        "reason": "ADR (Additional Documents Requested/Required) - IMM5669 (Schedule A - Background/Declaration) / Schedule A issue; PCC (Police Clearance Certificate) issue",
+        "count": 10
       },
       {
-        "reason": "ADR (Additional Documents Requested/Required) - IMM5669 (Schedule A - Background/Declaration) / Schedule A issue; PCC (Police Clearance Certificate) issue",
+        "reason": "Returned - BC (Birth Certificate) issue",
         "count": 9
       },
       {
@@ -69,11 +65,11 @@
         "count": 5
       },
       {
-        "reason": "Returned - IMM5669 (Schedule A - Background/Declaration) / Schedule A issue",
-        "count": 3
+        "reason": "ADR (Additional Documents Requested/Required) - IMM5406 (Additional Family Information form) issue",
+        "count": 4
       },
       {
-        "reason": "ADR (Additional Documents Requested/Required) - IMM5406 (Additional Family Information form) issue",
+        "reason": "Returned - IMM5669 (Schedule A - Background/Declaration) / Schedule A issue",
         "count": 3
       },
       {
@@ -89,11 +85,23 @@
   "remarksStats": {
     "aorToPal": {
       "avgDays": 17,
-      "sampleCount": 440
+      "sampleCount": 455
     },
     "palToFd": {
       "avgDays": 43,
-      "sampleCount": 164
+      "sampleCount": 174
+    },
+    "fdToP1": {
+      "avgDays": 6,
+      "sampleCount": 386
+    },
+    "p1ToP2": {
+      "avgDays": 6,
+      "sampleCount": 358
+    },
+    "p2ToEcopr": {
+      "avgDays": 18,
+      "sampleCount": 152
     }
   }
 }
