@@ -445,6 +445,22 @@ const extractAorDate = (record) => {
 	return candidates.sort((a, b) => a.getTime() - b.getTime()).at(-1) ?? null;
 };
 
+const extractPalDate = (record) => {
+	const sourceKey = getRecordSourceKey(record);
+	if (sourceKey && DEC_LAYOUT_SOURCE_KEYS.has(sourceKey)) {
+		// dec/oct/nov layout: col_11=PAL
+		return extractDateFromKeys(record, ['pal', 'col_11']);
+	}
+	if (sourceKey === 'jan' || sourceKey && FEB_MAR_FD_SOURCE_KEYS.has(sourceKey)) {
+		// jan/feb/mar layout: col_13=PAL
+		return extractDateFromKeys(record, ['pal', 'col_13']);
+	}
+	if (sourceKey === 'may') {
+		return extractDateFromKeys(record, ['pal', 'col_14']);
+	}
+	return extractDateFromKeys(record, ['pal']);
+};
+
 const extractFdDate = (record) => {
 	const sourceKey = getRecordSourceKey(record);
 	if (sourceKey && DEC_LAYOUT_SOURCE_KEYS.has(sourceKey)) {
@@ -707,22 +723,17 @@ const extractRemarksStats = (records) => {
 	const p2ToEcoprDays = [];
 
 	for (const record of records) {
-		const rem = record.remarks;
-		if (rem && typeof rem === 'string') {
-			const m1 = rem.match(/AOR\s*->\s*PAL\s*:\s*(\d+)/i);
-			const m2 = rem.match(/PAL\s*->\s*FD\s*:\s*(\d+)/i);
-
-			if (m1) {
-				const v = parseInt(m1[1], 10);
-				if (v >= 1 && v <= 365) aorPalDays.push(v);
-			}
-			if (m2) {
-				const v = parseInt(m2[1], 10);
-				if (v >= 1 && v <= 500) palFdDays.push(v);
-			}
-		}
-
+		const palDate = extractPalDate(record);
 		const fdDate = extractFdDate(record);
+
+		if (palDate) {
+			const aorDate = extractAorDate(record);
+			const aorToPal = aorDate ? diffDaysFloor(toLocalDayString(aorDate), toLocalDayString(palDate)) : null;
+			if (aorToPal !== null && aorToPal >= 1 && aorToPal <= 365) aorPalDays.push(aorToPal);
+
+			const palToFd = fdDate ? diffDaysFloor(toLocalDayString(palDate), toLocalDayString(fdDate)) : null;
+			if (palToFd !== null && palToFd >= 1 && palToFd <= 500) palFdDays.push(palToFd);
+		}
 		const p1Date = extractP1Date(record);
 		const p2Date = extractP2Date(record);
 		const ecoprDate = extractEcoprDate(record);
