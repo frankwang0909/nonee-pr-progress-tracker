@@ -1,21 +1,21 @@
 {
-  "asOf": "2026-03-13T05:39:43.105Z",
-  "totalRecords": 4860,
+  "asOf": "2026-03-13T16:38:07.017Z",
+  "totalRecords": 4883,
   "progress": {
     "aor": {
       "submissionDate": "2025-08-06",
-      "stageDate": "2026-03-12",
-      "sampleCount": 16
+      "stageDate": "2026-03-13",
+      "sampleCount": 32
     },
     "fd": {
       "submissionDate": "2025-03-31",
-      "stageDate": "2026-03-12",
-      "sampleCount": 1
+      "stageDate": "2026-03-13",
+      "sampleCount": 2
     },
     "p1": {
-      "submissionDate": "2025-03-29",
-      "stageDate": "2026-03-11",
-      "sampleCount": 3
+      "submissionDate": "2025-03-31",
+      "stageDate": "2026-03-13",
+      "sampleCount": 1
     },
     "p2": {
       "submissionDate": "2025-03-25",
@@ -30,7 +30,7 @@
     "prCard": null
   },
   "returns": {
-    "count": 227,
+    "count": 228,
     "reasons": [
       {
         "reason": "ADR (Additional Documents Requested/Required) - IMM5669 (Schedule A - Background/Declaration) / Schedule A issue",
@@ -85,23 +85,23 @@
   "remarksStats": {
     "aorToPal": {
       "avgDays": 55,
-      "sampleCount": 1070
+      "sampleCount": 1076
     },
     "palToFd": {
-      "avgDays": 60,
-      "sampleCount": 448
+      "avgDays": 59,
+      "sampleCount": 453
     },
     "fdToP1": {
       "avgDays": 6,
-      "sampleCount": 386
+      "sampleCount": 392
     },
     "p1ToP2": {
       "avgDays": 6,
-      "sampleCount": 358
+      "sampleCount": 366
     },
     "p2ToEcopr": {
-      "avgDays": 18,
-      "sampleCount": 152
+      "avgDays": 19,
+      "sampleCount": 153
     }
   }
 }
