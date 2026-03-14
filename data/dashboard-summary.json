@@ -1,6 +1,6 @@
 {
-  "asOf": "2026-03-14T05:09:20.123Z",
-  "totalRecords": 4905,
+  "asOf": "2026-03-14T16:29:28.741Z",
+  "totalRecords": 4907,
   "progress": {
     "aor": {
       "submissionDate": "2025-09-01",
@@ -30,7 +30,7 @@
     "prCard": null
   },
   "returns": {
-    "count": 233,
+    "count": 234,
     "reasons": [
       {
         "reason": "ADR (Additional Documents Requested/Required) - IMM5669 (Schedule A - Background/Declaration) / Schedule A issue",
@@ -85,19 +85,19 @@
   "remarksStats": {
     "aorToPal": {
       "avgDays": 55,
-      "sampleCount": 1085
+      "sampleCount": 1087
     },
     "palToFd": {
       "avgDays": 59,
-      "sampleCount": 455
+      "sampleCount": 456
     },
     "fdToP1": {
       "avgDays": 6,
-      "sampleCount": 397
+      "sampleCount": 400
     },
     "p1ToP2": {
       "avgDays": 6,
-      "sampleCount": 376
+      "sampleCount": 379
     },
     "p2ToEcopr": {
       "avgDays": 18,
