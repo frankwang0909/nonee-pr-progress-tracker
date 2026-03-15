@@ -1,6 +1,6 @@
 {
-  "asOf": "2026-03-14T16:29:28.741Z",
-  "totalRecords": 4907,
+  "asOf": "2026-03-15T05:26:48.772Z",
+  "totalRecords": 4918,
   "progress": {
     "aor": {
       "submissionDate": "2025-09-01",
@@ -10,12 +10,12 @@
     "fd": {
       "submissionDate": "2025-03-31",
       "stageDate": "2026-03-13",
-      "sampleCount": 2
+      "sampleCount": 3
     },
     "p1": {
       "submissionDate": "2025-03-31",
       "stageDate": "2026-03-13",
-      "sampleCount": 1
+      "sampleCount": 2
     },
     "p2": {
       "submissionDate": "2025-03-29",
@@ -85,19 +85,19 @@
   "remarksStats": {
     "aorToPal": {
       "avgDays": 55,
-      "sampleCount": 1087
+      "sampleCount": 1092
     },
     "palToFd": {
       "avgDays": 59,
-      "sampleCount": 456
+      "sampleCount": 458
     },
     "fdToP1": {
       "avgDays": 6,
-      "sampleCount": 400
+      "sampleCount": 402
     },
     "p1ToP2": {
       "avgDays": 6,
-      "sampleCount": 379
+      "sampleCount": 380
     },
     "p2ToEcopr": {
       "avgDays": 18,
